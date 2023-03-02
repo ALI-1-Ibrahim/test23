@@ -189,13 +189,47 @@ var zoom = map.getZoom(); //zoom level
 
 ///////////////////////////////////////////////////////////////////////////////////////////
 
-if (navigator.geolocation) {
-  navigator.geolocation.watchPosition(showPosition);
+// if (navigator.geolocation) {
+//   navigator.geolocation.watchPosition(showPosition);
+// }
+// function showPosition(position) {
+//   start = [position.coords.longitude,position.coords.latitude ]
+//   // console.log(start)
+// }
+
+
+
+
+var watchID;
+         var geoLoc;
+         
+         function showLocation(position) {
+          start = [position.coords.longitude,position.coords.latitude ]
+         }
+
+
+
+function errorHandler(err) {
+  if(err.code == 1) {
+     alert("Error: Access is denied!");
+  } else if( err.code == 2) {
+     alert("Error: Position is unavailable!");
+  }
 }
-function showPosition(position) {
-  start = [position.coords.longitude,position.coords.latitude ]
-  // console.log(start)
-}
+
+  
+  if(navigator.geolocation){
+     
+     // timeout at 60000 milliseconds (60 seconds)
+     var options = {timeout:60000};
+     geoLoc = navigator.geolocation;
+     watchID = geoLoc.watchPosition(showLocation, errorHandler, options);
+  } else {
+     alert("Sorry, browser does not support geolocation!");
+  }
+
+
+
 var start =[];
 async function getRoute(end) {
   // make a directions request using cycling profile
